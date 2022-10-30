@@ -1,6 +1,6 @@
 ![Title](.github/title.png)
 
-> This is an unofficial backport to 1.16.5. Please do not annoy the orignal author with support requests, just post them on the issues tab of this repo.
+> This is an unofficial backport to 1.16.5. Please do not annoy the original author with support requests, just post them on the issues tab of this repo.
 
 # 🧶️ Features
 
@@ -22,7 +22,7 @@
 - Adds an indicator (arrow) to the ingame UI (aka HUD) showing the cooldown of the roll ability and number of rolls available
 - Exhaust (aka hunger) is added to the player upon rolling (server side configurable)
 - Roll ability can only be used when player is: not using item, not jumping, not swimming
-- High compatibility with [Better Combat](https://github.com/ZsoltMolnarrr/BetterCombat)
+- High compatibility with [Better Combat](https://github.com/LukeGrahamLandry/BetterCombat)
 
 # 🔧 Configuration
 
