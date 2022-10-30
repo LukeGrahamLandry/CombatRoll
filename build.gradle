@@ -15,7 +15,7 @@ subprojects {
     }
 
     archivesBaseName = rootProject.archives_base_name + "-${project.name}"
-    version = rootProject.mod_version + "+1.19"
+    version = rootProject.mod_version
 
     dependencies {
         minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
@@ -43,12 +43,22 @@ allprojects {
         // for more information about repositories.
     }
 
+    def targetJavaVersion = 8
     tasks.withType(JavaCompile) {
         options.encoding = "UTF-8"
-        options.release = 17
+
+        if (JavaVersion.current().isJava9Compatible()) {
+            options.release = targetJavaVersion
+        }
     }
 
     java {
+        def javaVersion = JavaVersion.toVersion(targetJavaVersion)
+        if (JavaVersion.current() < javaVersion) {
+            toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
+        }
+        archivesBaseName = project.archives_base_name
+
         withSourcesJar()
     }
 }

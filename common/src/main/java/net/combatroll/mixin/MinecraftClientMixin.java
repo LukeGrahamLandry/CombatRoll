@@ -10,6 +10,7 @@ import net.combatroll.client.RollManager;
 import net.combatroll.compatibility.BetterCombatHelper;
 import net.combatroll.network.Packets;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
@@ -41,9 +42,8 @@ public abstract class MinecraftClientMixin implements MinecraftClientExtension {
     }
 
     @Inject(method = "doAttack", at = @At("HEAD"), cancellable = true)
-    private void doAttack_HEAD(CallbackInfoReturnable<Boolean> info) {
+    private void doAttack_HEAD(CallbackInfo info) {
         if (rollManager.isRolling()) {
-            info.setReturnValue(false);
             info.cancel();
         }
     }
@@ -68,7 +68,7 @@ public abstract class MinecraftClientMixin implements MinecraftClientExtension {
     }
 
     private void tryRolling() {
-        var client = (MinecraftClient) ((Object)this);
+        MinecraftClient client = (MinecraftClient) ((Object)this);
         if (player == null || client.isPaused()) {
             return;
         }
@@ -83,7 +83,7 @@ public abstract class MinecraftClientMixin implements MinecraftClientExtension {
             if(!CombatRoll.config.allow_rolling_while_airborn && !player.isOnGround()) {
                 return;
             }
-            if(player.isSwimming() || player.isCrawling()) {
+            if(player.isSwimming()) {
                 return;
             }
             if(player.getVehicle() != null) {
@@ -98,7 +98,7 @@ public abstract class MinecraftClientMixin implements MinecraftClientExtension {
             if (BetterCombatHelper.isDoingUpswing()) {
                 BetterCombatHelper.cancelUpswing();
             } else {
-                if (client.options.attackKey.isPressed()) {
+                if (client.options.keyAttack.isPressed()) {
                     return;
                 }
             }
@@ -106,35 +106,35 @@ public abstract class MinecraftClientMixin implements MinecraftClientExtension {
                 return;
             }
 
-            var forward = player.input.movementForward;
-            var sideways = player.input.movementSideways;
+            float forward = player.input.movementForward;
+            float sideways = player.input.movementSideways;
             Vec3d direction;
             if (forward == 0 && sideways == 0) {
                 direction = new Vec3d(0, 0, 1);
             } else  {
                 direction = new Vec3d(sideways, 0, forward).normalize();
             }
-            direction = direction.rotateY((float) Math.toRadians((-1.0) * player.getYaw()));
-            var distance = 0.475 *
+            direction = direction.rotateY((float) Math.toRadians((-1.0) * player.getYaw(1)));
+            double distance = 0.475 *
                     (EntityAttributes_CombatRoll.getAttributeValue(player, DISTANCE)
                     + CombatRoll.config.additional_roll_distance);
             direction = direction.multiply(distance);
 
-            var block = player.world.getBlockState(player.getBlockPos().down()).getBlock();
-            var slipperiness = block.getSlipperiness();
-            var defaultSlipperiness = Blocks.GRASS.getSlipperiness();
+            Block block = player.world.getBlockState(player.getBlockPos().down()).getBlock();
+            float slipperiness = block.getSlipperiness();
+            float defaultSlipperiness = Blocks.GRASS.getSlipperiness();
             if (slipperiness > defaultSlipperiness) {
-                var multiplier = defaultSlipperiness / slipperiness;
+                float multiplier = defaultSlipperiness / slipperiness;
                 direction = direction.multiply(multiplier * multiplier);
             }
 
             player.addVelocity(direction.x, direction.y, direction.z);
             rollManager.onRoll(player);
 
-            var rollVisuals = new RollEffect.Visuals(CombatRoll.MOD_ID + ":roll", PUFF);
+            RollEffect.Visuals rollVisuals = new RollEffect.Visuals(CombatRoll.MOD_ID + ":roll", PUFF);
             ClientPlayNetworking.send(
                     Packets.RollPublish.ID,
-                    new Packets.RollPublish(player.getId(), rollVisuals, direction).write());
+                    new Packets.RollPublish(player.getEntityId(), rollVisuals, direction).write());
             RollEffect.playVisuals(rollVisuals, player, direction);
         }
     }

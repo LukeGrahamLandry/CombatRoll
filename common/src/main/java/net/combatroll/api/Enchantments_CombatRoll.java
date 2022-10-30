@@ -20,7 +20,7 @@ public class Enchantments_CombatRoll {
     public static final AmplifierEnchantment DISTANCE = new AmplifierEnchantment(
             Enchantment.Rarity.UNCOMMON,
             ADD,
-            CombatRoll.enchantmentConfig.currentConfig.longfooted,
+            CombatRoll.enchantmentConfig.value.longfooted,
             ARMOR_FEET,
             new EquipmentSlot[]{ EquipmentSlot.FEET });
 
@@ -30,7 +30,7 @@ public class Enchantments_CombatRoll {
     public static final AmplifierEnchantment RECHARGE_CHEST = new AmplifierEnchantment(
             Enchantment.Rarity.RARE,
             MULTIPLY,
-            CombatRoll.enchantmentConfig.currentConfig.acrobat_chest,
+            CombatRoll.enchantmentConfig.value.acrobat_chest,
             ARMOR_CHEST,
             new EquipmentSlot[]{ EquipmentSlot.CHEST });
 
@@ -39,7 +39,7 @@ public class Enchantments_CombatRoll {
     public static final AmplifierEnchantment RECHARGE_LEGS = new AmplifierEnchantment(
             Enchantment.Rarity.RARE,
             MULTIPLY,
-            CombatRoll.enchantmentConfig.currentConfig.acrobat_legs,
+            CombatRoll.enchantmentConfig.value.acrobat_legs,
             ARMOR_LEGS,
             new EquipmentSlot[]{ EquipmentSlot.LEGS });
 
@@ -49,7 +49,7 @@ public class Enchantments_CombatRoll {
     public static final AmplifierEnchantment COUNT = new AmplifierEnchantment(
             Enchantment.Rarity.VERY_RARE,
             ADD,
-            CombatRoll.enchantmentConfig.currentConfig.multi_roll,
+            CombatRoll.enchantmentConfig.value.multi_roll,
             ARMOR_HEAD,
             new EquipmentSlot[]{ EquipmentSlot.HEAD });
 }

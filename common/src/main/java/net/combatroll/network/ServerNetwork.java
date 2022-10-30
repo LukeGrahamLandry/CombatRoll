@@ -10,6 +10,7 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.world.ServerWorld;
 import net.combatroll.api.event.Event;
 import net.combatroll.api.event.ServerSideRollEvents;
+import net.minecraft.util.math.Vec3d;
 
 public class ServerNetwork {
     private static PacketByteBuf configSerialized = PacketByteBufs.create();
@@ -26,12 +27,12 @@ public class ServerNetwork {
             if (world == null || world.isClient) {
                 return;
             }
-            final var packet = Packets.RollPublish.read(buf);
-            final var velocity = packet.velocity();
-            final var forwardBuffer = new Packets.RollAnimation(player.getId(), packet.visuals(), packet.velocity()).write();
+            final Packets.RollPublish packet = Packets.RollPublish.read(buf);
+            final Vec3d velocity = packet.velocity();
+            final PacketByteBuf forwardBuffer = new Packets.RollAnimation(player.getEntityId(), packet.visuals(), packet.velocity()).write();
             PlayerLookup.tracking(player).forEach(serverPlayer -> {
                 try {
-                    if (serverPlayer.getId() != player.getId() && ServerPlayNetworking.canSend(serverPlayer, Packets.RollAnimation.ID)) {
+                    if (serverPlayer.getEntityId() != player.getEntityId() && ServerPlayNetworking.canSend(serverPlayer, Packets.RollAnimation.ID)) {
                         ServerPlayNetworking.send(serverPlayer, Packets.RollAnimation.ID, forwardBuffer);
                     }
                 } catch (Exception e) {
@@ -39,9 +40,9 @@ public class ServerNetwork {
                 }
             });
 
-            world.getServer().executeSync(() -> {
+            world.getServer().execute(() -> {
                 player.addExhaustion(CombatRoll.config.exhaust_on_roll);
-                var proxy = (Event.Proxy<ServerSideRollEvents.PlayerStartRolling>)ServerSideRollEvents.PLAYER_START_ROLLING;
+                Event.Proxy<ServerSideRollEvents.PlayerStartRolling> proxy = (Event.Proxy<ServerSideRollEvents.PlayerStartRolling>)ServerSideRollEvents.PLAYER_START_ROLLING;
                 proxy.handlers.forEach(hander -> { hander.onPlayerStartedRolling(player, velocity);});
             });
         });

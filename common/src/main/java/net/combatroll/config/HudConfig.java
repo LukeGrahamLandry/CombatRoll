@@ -7,14 +7,14 @@ public class HudConfig {
     public HudElement rollWidget;
 
     public static HudConfig createDefault() {
-        var config = new HudConfig();
+        HudConfig config = new HudConfig();
         config.rollWidget = createDefaultRollWidget();
         return config;
     }
 
     public static HudElement createDefaultRollWidget() {
-        var origin = HudElement.Origin.BOTTOM;
-        var offset = origin.initialOffset().add(new Vec2f(100, 0));
+        HudElement.Origin origin = HudElement.Origin.BOTTOM;
+        Vec2f offset = new Vec2f(origin.initialOffset().x + 100, origin.initialOffset().y);
         return new HudElement(origin, offset);
     }
 }

@@ -1,42 +1,42 @@
 package net.combatroll.client.gui;
 
+import net.combatroll.client.CombatRollClient;
+import net.combatroll.config.HudConfig;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.Vec2f;
-import net.combatroll.client.CombatRollClient;
-import net.combatroll.config.HudConfig;
 
 public class HudConfigScreen extends Screen {
     private Screen previous;
 
     public HudConfigScreen(Screen previous) {
-        super(Text.translatable("gui.combatroll.hud"));
+        super(new TranslatableText("gui.combatroll.hud"));
         this.previous = previous;
     }
 
     @Override
     protected void init() {
-        var buttonWidth = 120;
-        var buttonHeight = 20;
-        var buttonCenterX = (width / 2) - (buttonWidth / 2);
-        var buttonCenterY = (height / 2) - (buttonHeight / 2);
+        int buttonWidth = 120;
+        int buttonHeight = 20;
+        int buttonCenterX = (width / 2) - (buttonWidth / 2);
+        int buttonCenterY = (height / 2) - (buttonHeight / 2);
 
-        addDrawableChild(new ButtonWidget(buttonCenterX, buttonCenterY - 30, buttonWidth, buttonHeight, Text.translatable("gui.combatroll.close"), button -> {
+        addButton(new ButtonWidget(buttonCenterX, buttonCenterY - 30, buttonWidth, buttonHeight, new TranslatableText("gui.combatroll.close"), button -> {
             close();
         }));
-        addDrawableChild(new ButtonWidget(buttonCenterX, buttonCenterY, buttonWidth, buttonHeight, Text.translatable("gui.combatroll.corner"), button -> {
+        addButton(new ButtonWidget(buttonCenterX, buttonCenterY, buttonWidth, buttonHeight, new TranslatableText("gui.combatroll.corner"), button -> {
             nextOrigin();
         }));
-        addDrawableChild(new ButtonWidget(buttonCenterX, buttonCenterY + 30, buttonWidth, buttonHeight, Text.translatable("gui.combatroll.reset"), button -> {
+        addButton(new ButtonWidget(buttonCenterX, buttonCenterY + 30, buttonWidth, buttonHeight, new TranslatableText("gui.combatroll.reset"), button -> {
             reset();
         }));
     }
 
     public void close() {
         this.save();
-        this.client.setScreen(previous);
+        this.client.openScreen(previous);
     }
 
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
@@ -48,7 +48,7 @@ public class HudConfigScreen extends Screen {
     @Override
     public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
         if (!this.isDragging() && button == 0) {
-            var config = CombatRollClient.hudConfig.currentConfig;
+            HudConfig config = CombatRollClient.hudConfig.value;
             config.rollWidget.offset = new Vec2f(
                     (float) (config.rollWidget.offset.x + deltaX),
                     (float) (config.rollWidget.offset.y + deltaY));
@@ -57,7 +57,7 @@ public class HudConfigScreen extends Screen {
     }
 
     public static void nextOrigin() {
-        var config = CombatRollClient.hudConfig.currentConfig;
+        HudConfig config = CombatRollClient.hudConfig.value;
         HudElement.Origin origin;
         try {
             origin = HudElement.Origin.values()[(config.rollWidget.origin.ordinal() + 1)];
@@ -73,7 +73,7 @@ public class HudConfigScreen extends Screen {
     }
 
     public void reset() {
-        var config = CombatRollClient.hudConfig.currentConfig;
+        HudConfig config = CombatRollClient.hudConfig.value;
         config.rollWidget = HudConfig.createDefaultRollWidget();
     }
 }

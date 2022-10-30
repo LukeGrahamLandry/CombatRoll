@@ -10,6 +10,7 @@ import net.combatroll.client.animation.AnimationRegistry;
 import net.combatroll.config.ClientConfig;
 import net.combatroll.config.ClientConfigWrapper;
 import net.combatroll.config.HudConfig;
+import net.minecraft.resource.ResourceManager;
 import net.tinyconfig.ConfigManager;
 
 public class CombatRollClient {
@@ -28,7 +29,7 @@ public class CombatRollClient {
 
         ClientNetwork.initializeHandlers();
         ClientLifecycleEvents.CLIENT_STARTED.register((client) -> {
-            var resourceManager = MinecraftClient.getInstance().getResourceManager();
+            ResourceManager resourceManager = MinecraftClient.getInstance().getResourceManager();
             AnimationRegistry.load(resourceManager);
         });
     }

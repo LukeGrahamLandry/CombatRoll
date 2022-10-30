@@ -35,6 +35,8 @@ public class CombatRoll {
         ServerNetwork.initializeHandlers();
     }
 
+
+    // must be emulated in
     public static void registerAttributes() {
         Registry.register(Registry.ATTRIBUTE, EntityAttributes_CombatRoll.distanceId, EntityAttributes_CombatRoll.DISTANCE);
         Registry.register(Registry.ATTRIBUTE, EntityAttributes_CombatRoll.rechargeId, EntityAttributes_CombatRoll.RECHARGE);
@@ -42,7 +44,7 @@ public class CombatRoll {
     }
 
     public static void configureEnchantments() {
-        var config = enchantmentConfig.currentConfig;
+        EnchantmentConfig config = enchantmentConfig.value;
         Enchantments_CombatRoll.DISTANCE.properties = config.longfooted;
         Enchantments_CombatRoll.RECHARGE_CHEST.properties = config.acrobat_chest;
         Enchantments_CombatRoll.RECHARGE_LEGS.properties = config.acrobat_legs;

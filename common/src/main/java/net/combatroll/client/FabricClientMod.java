@@ -1,8 +1,9 @@
-package net.combatroll.fabric.client;
+package net.combatroll.client;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
+import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.math.MatrixStack;
 import net.combatroll.client.CombatRollClient;
 import net.combatroll.client.RollKeybings;
@@ -12,7 +13,7 @@ public class FabricClientMod implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         CombatRollClient.initialize();
-        for(var keybinding: RollKeybings.all) {
+        for(KeyBinding keybinding: RollKeybings.all) {
             KeyBindingHelper.registerKeyBinding(keybinding);
         }
         HudRenderCallback.EVENT.register((MatrixStack matrixStack, float tickDelta) -> {

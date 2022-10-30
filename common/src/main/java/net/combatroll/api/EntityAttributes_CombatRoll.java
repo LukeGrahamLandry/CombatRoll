@@ -7,6 +7,7 @@ import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Identifier;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class EntityAttributes_CombatRoll {
@@ -25,7 +26,7 @@ public class EntityAttributes_CombatRoll {
 
     public static List<EntityAttribute> all;
     static {
-        all = List.of(DISTANCE, RECHARGE, COUNT);
+        all = Arrays.asList(DISTANCE, RECHARGE, COUNT);
     }
 
     // Helper
@@ -35,27 +36,23 @@ public class EntityAttributes_CombatRoll {
     }
 
     public static double getAttributeValue(PlayerEntity player, Type type) {
-        switch (type) {
-            case DISTANCE -> {
-                var value = player.getAttributeValue(DISTANCE);
-                var level = EnchantmentHelper.getEquipmentLevel(Enchantments_CombatRoll.DISTANCE, player);
-                value = Enchantments_CombatRoll.DISTANCE.apply(value, level);
-                return value;
-            }
-            case RECHARGE -> {
-                var value = player.getAttributeValue(RECHARGE);
-                var chestLevel = EnchantmentHelper.getEquipmentLevel(Enchantments_CombatRoll.RECHARGE_CHEST, player);
-                value = Enchantments_CombatRoll.RECHARGE_CHEST.apply(value, chestLevel);
-                var legsLevel = EnchantmentHelper.getEquipmentLevel(Enchantments_CombatRoll.RECHARGE_LEGS, player);
-                value = Enchantments_CombatRoll.RECHARGE_LEGS.apply(value, legsLevel);
-                return value;
-            }
-            case COUNT -> {
-                var value = player.getAttributeValue(COUNT);
-                var level = EnchantmentHelper.getEquipmentLevel(Enchantments_CombatRoll.COUNT, player);
-                value = Enchantments_CombatRoll.COUNT.apply(value, level);
-                return value;
-            }
+        if (type == Type.DISTANCE) {
+            double value = player.getAttributeValue(DISTANCE);
+            int level = EnchantmentHelper.getEquipmentLevel(Enchantments_CombatRoll.DISTANCE, player);
+            value = Enchantments_CombatRoll.DISTANCE.apply(value, level);
+            return value;
+        } else if (type == Type.RECHARGE) {
+            double value = player.getAttributeValue(RECHARGE);
+            int chestLevel = EnchantmentHelper.getEquipmentLevel(Enchantments_CombatRoll.RECHARGE_CHEST, player);
+            value = Enchantments_CombatRoll.RECHARGE_CHEST.apply(value, chestLevel);
+            int legsLevel = EnchantmentHelper.getEquipmentLevel(Enchantments_CombatRoll.RECHARGE_LEGS, player);
+            value = Enchantments_CombatRoll.RECHARGE_LEGS.apply(value, legsLevel);
+            return value;
+        } else if (type == Type.COUNT) {
+            double value = player.getAttributeValue(COUNT);
+            int level = EnchantmentHelper.getEquipmentLevel(Enchantments_CombatRoll.COUNT, player);
+            value = Enchantments_CombatRoll.COUNT.apply(value, level);
+            return value;
         }
         return 1; // Should never happen
     }

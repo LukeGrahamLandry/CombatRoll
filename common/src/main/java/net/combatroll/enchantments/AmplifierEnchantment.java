@@ -28,13 +28,10 @@ public class AmplifierEnchantment extends Enchantment {
     }
 
     public double apply(double value, int level) {
-        switch (operation) {
-            case ADD -> {
-                return value += ((float)level) * properties.bonus_per_level;
-            }
-            case MULTIPLY -> {
-                return value *= 1F + ((float)level) * properties.bonus_per_level;
-            }
+        if (operation == Operation.ADD) {
+            return value += ((float) level) * properties.bonus_per_level;
+        } else if (operation == Operation.MULTIPLY) {
+            return value *= 1F + ((float) level) * properties.bonus_per_level;
         }
         assert true;
         return 0F;

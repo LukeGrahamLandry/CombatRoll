@@ -2,10 +2,9 @@
   "required": true,
   "minVersion": "0.8",
   "package": "net.combatroll.mixin",
-  "compatibilityLevel": "JAVA_17",
+  "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "PlayerEntityMixin",
-    "RegistryMixin"
+    "PlayerEntityMixin"
   ],
   "client": [
     "AbstractClientPlayerEntityMixin",

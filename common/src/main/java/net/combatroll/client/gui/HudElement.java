@@ -16,50 +16,36 @@ public class HudElement {
         BOTTOM, BOTTOM_LEFT, BOTTOM_RIGHT;
 
         public Vec2f getPoint(int screenWidth, int screenHeight) {
-            switch (this) {
-                case TOP -> {
-                    return new Vec2f(screenWidth / 2F, 0);
-                }
-                case TOP_LEFT -> {
-                    return new Vec2f(0, 0);
-                }
-                case TOP_RIGHT -> {
-                    return new Vec2f(screenWidth, 0);
-                }
-                case BOTTOM -> {
-                    return new Vec2f(screenWidth / 2F, screenHeight);
-                }
-                case BOTTOM_LEFT -> {
-                    return new Vec2f(0, screenHeight);
-                }
-                case BOTTOM_RIGHT -> {
-                    return new Vec2f(screenWidth, screenHeight);
-                }
+            if (this == Origin.TOP) {
+                return new Vec2f(screenWidth / 2F, 0);
+            } else if (this == Origin.TOP_LEFT) {
+                return new Vec2f(0, 0);
+            } else if (this == Origin.TOP_RIGHT) {
+                return new Vec2f(screenWidth, 0);
+            } else if (this == Origin.BOTTOM) {
+                return new Vec2f(screenWidth / 2F, screenHeight);
+            } else if (this == Origin.BOTTOM_LEFT) {
+                return new Vec2f(0, screenHeight);
+            } else if (this == Origin.BOTTOM_RIGHT) {
+                return new Vec2f(screenWidth, screenHeight);
             }
             return new Vec2f(screenWidth / 2F, screenHeight / 2F); // Should never run
         }
 
         public Vec2f initialOffset() {
             int offset = 12;
-            switch (this) {
-                case TOP -> {
-                    return new Vec2f(0, offset);
-                }
-                case TOP_LEFT -> {
-                    return new Vec2f(offset, offset);
-                }
-                case TOP_RIGHT -> {
-                    return new Vec2f((-1) * offset, offset);
-                }
-                case BOTTOM -> {
-                    return new Vec2f(0, (-1) * offset);
-                }
-                case BOTTOM_LEFT -> {
-                    return new Vec2f(offset, (-1) * offset);
-                }
-                case BOTTOM_RIGHT -> {
-                    return new Vec2f((-1) * offset, (-1) * offset);
-                }
+            if (this == Origin.TOP) {
+                return new Vec2f(0, offset);
+            } else if (this == Origin.TOP_LEFT) {
+                return new Vec2f(offset, offset);
+            } else if (this == Origin.TOP_RIGHT) {
+                return new Vec2f((-1) * offset, offset);
+            } else if (this == Origin.BOTTOM) {
+                return new Vec2f(0, (-1) * offset);
+            } else if (this == Origin.BOTTOM_LEFT) {
+                return new Vec2f(offset, (-1) * offset);
+            } else if (this == Origin.BOTTOM_RIGHT) {
+                return new Vec2f((-1) * offset, (-1) * offset);
             }
             return new Vec2f(0, 0); // Should never run
         }
