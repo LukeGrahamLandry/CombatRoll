@@ -95,13 +95,7 @@ public class HudRenderHelper {
         }
 
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-
-        // fixes texture state leak
-        MinecraftClient.getInstance().getTextureManager().bindTexture(ICONS_TEXTURE);
     }
-
-    private static final Identifier ICONS_TEXTURE = new Identifier("textures/gui/icons.png");
-
 
     private static final class ViewModel {
         private final List<Element> elements;
